@@ -7,7 +7,6 @@ import random
 import re
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
-from sklearn.externals import joblib
 from patterns import shortening_services
 
 app = Flask(__name__)
@@ -33,36 +32,30 @@ def getTokens(input):
 		allTokens.remove('com')	#removing .com since it occurs a lot of times and it should not be included in our features
 	return allTokens
 
-# def TL():
-# 	urlsdata = './newdata.csv'	#path to our all urls file
-# 	allurlsdata = pd.read_csv(urlsdata)
+def TL():
+	urlsdata = './newdata.csv'	#path to our all urls file
+	allurlsdata = pd.read_csv(urlsdata)
 
-# 	allurlsdata = np.array(allurlsdata)	#converting it into an array
-# 	random.shuffle(allurlsdata)	#shuffling
+	allurlsdata = np.array(allurlsdata)	#converting it into an array
+	random.shuffle(allurlsdata)	#shuffling
 
-# 	y = [d[1] for d in allurlsdata]	#all labels 
-# 	urls = [d[0] for d in allurlsdata]	#all urls corresponding to a label (either good or bad)
-# 	vectorizer = TfidfVectorizer(tokenizer=getTokens)	#get a vector for each url but use our customized tokenizer
-# 	X = vectorizer.fit_transform(urls)	#get the X vector
+	y = [d[1] for d in allurlsdata]	#all labels 
+	urls = [d[0] for d in allurlsdata]	#all urls corresponding to a label (either good or bad)
+	vectorizer = TfidfVectorizer(tokenizer=getTokens)	#get a vector for each url but use our customized tokenizer
+	X = vectorizer.fit_transform(urls)	#get the X vector
 
-# 	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)	#split into training and testing set 80/20 ratio
+	X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)	#split into training and testing set 80/20 ratio
 
-# 	lgs = LogisticRegression()	#using logistic regression
-# 	lgs.fit(X_train, y_train)
-# 	# print(lgs.score(X_test, y_test))	#pring the score. It comes out to be 98%
-# 	joblib.dump(lgs, 'model.joblib')
-# 	joblib.dump(vectorizer, 'vectorizer.joblib')
-# 	return vectorizer, lgs
+	lgs = LogisticRegression()	#using logistic regression
+	lgs.fit(X_train, y_train)
+	# print(lgs.score(X_test, y_test))	#pring the score. It comes out to be 98%
+	return vectorizer, lgs
+vectorizer, lgs  = TL()
+# @app.route('/get/<path:path>')
+# def show(path):
+# 	res = getTokens(path)
+# 	return jsonify(res)
 
-# # @app.route('/get/<path:path>')
-# # def show(path):
-# # 	res = getTokens(path)
-# # 	return jsonify(res)
-# vectorizer, lgs  = TL()
-
-
-vectorizer = joblib.load("vectorizer.joblib")
-lgs = joblib.load("model.joblib")
 @namespace.route('/url')
 class Url(Resource):
 	@namespace.doc(description='detects malicious urls')
@@ -98,4 +91,3 @@ class Url(Resource):
 
 if __name__ == "__main__":
 	app.run(debug=True)
-
