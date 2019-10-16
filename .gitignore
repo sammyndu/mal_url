@@ -1,0 +1,6 @@
+venv/
+.vscode/
+data.csv
+data2.csv
+dataset.csv
+fix.py
