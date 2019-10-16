@@ -9,6 +9,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 from sklearn.externals import joblib
 from patterns import shortening_services
+from getTokens import getTokens
 
 app = Flask(__name__)
 
@@ -18,20 +19,20 @@ namespace = api.namespace('', description='Main API  Routes')
 
 url_fields = namespace.model("Url", {"url": fields.String })
 
-def getTokens(input):
-	removeSlash = str(input).split('/')	#get tokens after splitting by slash
-	allTokens = []
-	for i in removeSlash:
-		tokens = str(i).split('-')	#get tokens after splitting by dash
-		removeDot = []
-		for j in range(0,len(tokens)):
-			tempTokens = str(tokens[j]).split('.')	#get tokens after splitting by dot
-			removeDot = removeDot + tempTokens
-		allTokens = allTokens + tokens + removeDot
-	allTokens = list(set(allTokens))	#remove redundant tokens
-	if 'com' in allTokens:
-		allTokens.remove('com')	#removing .com since it occurs a lot of times and it should not be included in our features
-	return allTokens
+# def getTokens(input):
+# 	removeSlash = str(input).split('/')	#get tokens after splitting by slash
+# 	allTokens = []
+# 	for i in removeSlash:
+# 		tokens = str(i).split('-')	#get tokens after splitting by dash
+# 		removeDot = []
+# 		for j in range(0,len(tokens)):
+# 			tempTokens = str(tokens[j]).split('.')	#get tokens after splitting by dot
+# 			removeDot = removeDot + tempTokens
+# 		allTokens = allTokens + tokens + removeDot
+# 	allTokens = list(set(allTokens))	#remove redundant tokens
+# 	if 'com' in allTokens:
+# 		allTokens.remove('com')	#removing .com since it occurs a lot of times and it should not be included in our features
+# 	return allTokens
 
 # def TL():
 # 	urlsdata = './newdata2.csv'	#path to our all urls file
