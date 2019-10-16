@@ -61,6 +61,7 @@ class Url(Resource):
 	@namespace.doc(description='detects malicious urls')
 	@namespace.expect(url_fields)
 	def post(self):
+		vectorizer, lgs  = TL()
 		req = request.get_json()
 		path = req['url']
 		if re.search(shortening_services, path):
@@ -90,6 +91,5 @@ class Url(Resource):
 
 
 if __name__ == "__main__":
-	vectorizer, lgs  = TL()
 	app.run(debug=True)
 
