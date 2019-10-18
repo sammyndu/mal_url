@@ -35,7 +35,7 @@ url_fields = namespace.model("Url", {"url": fields.String })
 # 	return allTokens
 
 def TL():
-	urlsdata = './newdata2.csv'	#path to our all urls file
+	urlsdata = './newdata.csv'	#path to our all urls file
 	allurlsdata = pd.read_csv(urlsdata)
 
 	allurlsdata = np.array(allurlsdata)	#converting it into an array
