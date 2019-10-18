@@ -62,9 +62,9 @@ url_fields = namespace.model("Url", {"url": fields.String })
 # # vectorizer, lgs  =
 # TL()
 
-
-vectorizer = joblib.load("vectorizer.joblib")
 lgs = joblib.load("model.joblib")
+vectorizer = joblib.load("vectorizer.joblib")
+
 @namespace.route('/url')
 class Url(Resource):
 	@namespace.doc(description='detects malicious urls')
